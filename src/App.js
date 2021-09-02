@@ -12,11 +12,11 @@ function App() {
   const onClickBtn = useCallback((event) => {
     const v = event.currentTarget.id
     setDisplay((d) => d !== '0' ?  v + d : v)
-  })
+  },[])
 
-  const onClickDelBtn = (event) => {
+  const onClickDelBtn =  useCallback((event) => {
     setDisplay((d) => d.length=== 1 ? '0' : d.slice(1))
-  }
+  },[])
   console.log("render");
 
   return (

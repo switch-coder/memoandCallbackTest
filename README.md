@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+## React Memo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+REACT는 컴포넌트를 렌더링 한뒤 , 이전 렌더된 결과와 비교하여 dom 업데이트를 결정한다. 렌더 결과가 다르다면, dom을 업데이트 한다.
 
-## Available Scripts
+```jsx
+import React, { memo } from "react";
 
-In the project directory, you can run:
+const Button = ({ n, className, onClick }) => {
+  console.log("n render :>> ", n);
+  return (
+    <button id={n} className={className} onClick={onClick}>
+      {n}
+    </button>
+  );
+};
 
-### `yarn start`
+export default memo(Button);
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+컴퍼넌트가 React.memo()로 래핑 될 때, React는 컴퍼넌트를 렌더링하고 결과를 메모이징(Memoizing)한다.
+그리고 다음 렌더링이 일어날 때 props가 같다면, React는 메모이징(Memoizing)된 내용을 재사용한다.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+React.memo는 위와 같이 사용되며 직접 컴포넌트를 감싸서 사용한다. React.memo는 Button의 결과를 `Memoization(이전 값을 메모리에 저장해 동일한 계산의 반복을 제거)`해서 리렌더링을 막는다.
 
-### `yarn test`
+이렇게 Memoized된 내용을 재사용하여 렌더시 가상 DOM에서 바뀐 부분이 확인하지 않아 성능이 향상된다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+`react.memo`혹은 `react.useCallback`만 사용했을 때이다.
+![screensh](./memo-or-callback.png)
 
-### `yarn build`
+만약 이런 렌더링을 막고싶다면
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+`react.memo`와 `react.useCallback`모두 사용하여 랜더링을 방지할수 있다.
+모두 사용했을때 사진과 같이 렌더링을 방지한 것을 알 수 있다.
+![screensh](./callback-memo.png)
